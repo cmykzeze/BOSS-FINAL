@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "umbraxis:item/fang_of_umbraxis"
+  }
+}
