@@ -1,0 +1,189 @@
+{
+  "boss.spawn": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.warden.emerge",
+        "type": "event",
+        "volume": 2.0,
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.spawn"
+  },
+  "boss.roar": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.warden.roar",
+        "type": "event",
+        "volume": 2.5,
+        "pitch": 0.55
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.roar"
+  },
+  "boss.ambient": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.ender_dragon.ambient",
+        "type": "event",
+        "volume": 2.0,
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.ambient"
+  },
+  "boss.growl": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.ender_dragon.growl",
+        "type": "event",
+        "volume": 2.5,
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.growl"
+  },
+  "boss.hurt": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.warden.hurt",
+        "type": "event",
+        "volume": 2.0,
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.hurt"
+  },
+  "boss.death_scream": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.warden.roar",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.4
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.death_scream"
+  },
+  "boss.death_final": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.ender_dragon.death",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.death_final"
+  },
+  "boss.stomp": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.warden.attack_impact",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.stomp"
+  },
+  "boss.step": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.warden.step",
+        "type": "event",
+        "volume": 2.0,
+        "pitch": 0.55
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.step"
+  },
+  "boss.sonic_charge": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.warden.sonic_charge",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.9
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.sonic_charge"
+  },
+  "boss.sonic_boom": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.warden.sonic_boom",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.sonic_boom"
+  },
+  "boss.beam_charge": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.ender_dragon.growl",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.beam_charge"
+  },
+  "boss.beam_fire": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.ender_dragon.shoot",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.beam_fire"
+  },
+  "boss.thunder": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.lightning_bolt.thunder",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.thunder"
+  },
+  "boss.phase_change": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.wither.spawn",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.phase_change"
+  },
+  "boss.explosion": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.generic.explode",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.explosion"
+  },
+  "boss.heartbeat": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.warden.heartbeat",
+        "type": "event",
+        "volume": 3.0,
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.umbraxis.heartbeat"
+  }
+}

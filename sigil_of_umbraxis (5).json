@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:beacon",
+    "minecraft:dragon_egg",
+    "minecraft:netherite_block",
+    "minecraft:netherite_block",
+    "minecraft:dragon_head",
+    "minecraft:dragon_breath",
+    "minecraft:elytra",
+    "minecraft:golden_apple",
+    "minecraft:totem_of_undying"
+  ],
+  "result": {
+    "id": "umbraxis:sigil_of_umbraxis",
+    "count": 1
+  }
+}

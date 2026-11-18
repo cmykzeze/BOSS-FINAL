@@ -1,0 +1,142 @@
+name: Build & smoke-test Umbraxis
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # Fabric's 26.3 announcement: "use Loom 1.17 and Gradle 9.6.0" for Minecraft 26.3.
+  # Older Gradle versions (9.4.x / 9.5.x) are the most common reason Loom 1.17 refuses to run.
+  GRADLE_VERSION: '9.6.0'
+
+jobs:
+  build:
+    name: Build mod
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 25 (required by Minecraft 26.x)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: ${{ env.GRADLE_VERSION }}
+
+      - name: Build mod
+        run: |
+          set -o pipefail
+          gradle --version
+          gradle build --stacktrace --no-daemon 2>&1 | tee build.log
+
+      - name: Upload mod jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: umbraxis-mod
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+          if-no-files-found: error
+
+      - name: Upload build log (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          if-no-files-found: warn
+
+  smoke-test:
+    # Boots a real dedicated 26.3 server with the mod. Catches broken registries
+    # (entity, items, sounds, enchantments, loot table, recipe) before you ever open the game.
+    name: Dedicated-server startup test
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: ${{ env.GRADLE_VERSION }}
+
+      - name: Boot dedicated server
+        shell: bash
+        run: |
+          mkdir -p run
+          echo "eula=true" > run/eula.txt
+          cat > run/server.properties <<'PROPERTIES'
+          online-mode=false
+          level-type=minecraft\:flat
+          spawn-protection=0
+          view-distance=4
+          simulation-distance=4
+          max-tick-time=-1
+          PROPERTIES
+          # YAML keeps the heredoc indentation out, but strip any leftover leading spaces to be safe.
+          sed -i 's/^[[:space:]]*//' run/server.properties
+
+          gradle --version
+          gradle runServer --no-daemon --stacktrace > server.log 2>&1 &
+          SERVER_PID=$!
+
+          started=0
+          for i in $(seq 1 120); do
+            if grep -Eq 'Done \([0-9.,]+s\)!' server.log; then started=1; break; fi
+            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              echo "Gradle/server process exited before the server finished starting."
+              break
+            fi
+            sleep 5
+          done
+
+          # Stop the server (Gradle + the Knot server JVM), whatever state it is in.
+          kill -TERM "$SERVER_PID" 2>/dev/null || true
+          pkill -TERM -f KnotServer || true
+          pkill -TERM -f fabric-loader || true
+          sleep 5
+          pkill -KILL -f KnotServer || true
+
+          echo "-------- server.log (last 150 lines) --------"
+          tail -n 150 server.log || true
+          echo "---------------------------------------------"
+
+          if [ "$started" -ne 1 ]; then
+            echo "::error::Server did not finish starting - read the log above (look for 'What went wrong' or 'Caused by')."
+            exit 1
+          fi
+          if ! grep -q 'Umbraxis awakens' server.log; then
+            echo "::error::Server started but the Umbraxis mod did not load (is the jar/fabric.mod.json OK?)."
+            exit 1
+          fi
+          if grep -E '/(ERROR|FATAL)\]' server.log | grep -i 'umbraxis'; then
+            echo "::error::Umbraxis data/registry errors found in the server log."
+            exit 1
+          fi
+          echo "Dedicated server started and Umbraxis initialized successfully."
+
+      - name: Upload server logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-log
+          path: |
+            server.log
+            run/logs/
+            run/crash-reports/
+          if-no-files-found: warn
